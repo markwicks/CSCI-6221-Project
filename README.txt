@@ -1,4 +1,7 @@
 
+ - https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html
+python3 -m pip install "PyShp"
+
 ###############################
 ### NOTES ON THE CRIME DATA ###
 ###############################

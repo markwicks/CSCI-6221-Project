@@ -1,24 +1,8 @@
 import pandas as pd
+import shapely
+import fiona
 
-###############################################################################
-#
-# Multiply the degrees of separation of longitude and latitude by 111,139 to
-#  get the corresponding linear distances in meters.
-#
-# Data: https://opendata.dc.gov/datasets/DCGIS::crime-incidents-in-2020/about
-#
-# OFFENSE variable includes: 
-#         'MOTOR VEHICLE THEFT', 'THEFT/OTHER', 'BURGLARY', 'THEFT F/AUTO',
-#         'ROBBERY', 'ASSAULT W/DANGEROUS WEAPON', 'HOMICIDE', 'SEX ABUSE',
-#         'ARSON'
-#
-# METHOD variable includes: "GUN", "KNIFE", "OTHERS"
-#
-# SHIFT variable includes 'DAY', 'EVENING', 'MIDNIGHT'
-#
-# need to compute # of crimes/total area
-#
-###############################################################################
+
 
 data_path = "/Users/markwicks/Desktop/advanced software paradigms/CSCI-6221-Project/data/"
 
@@ -66,13 +50,40 @@ def countCrimesInArea(lat, long, data, radiusInMeters):
     return counter
     
 ###############################################################################
+# Returns the boundary for DC, as a set of lat/long points.
+# This can be used for a GUI, looping through areas in DC, and checking
+# whether a point (latitude & longitude) is inside DC.
+def getShapeFileForDC():
+    with fiona.open(data_path + "/cb_2018_us_state_500k/cb_2018_us_state_500k.shp") as c:
+         for record in c:
+             if record.get('properties').get('STATEFP') == '11':
+                print("\n --> Found DC: " + str(record.get('properties')) + "\n")
+                coord_list = record.get('geometry').get('coordinates')
+                break
+            
+    coord_list_string = str(coord_list[0]).split('),')
+    
+    d = []
+    for record in coord_list_string:
+        lat_and_long = record.replace('[(', '').split(',')
+        d.append(lat_and_long)
+        
+    return(pd.DataFrame(d))
 
-countCrimesInArea(
-   lat            = 38.9014829636, 
-   long           = -76.9332371122,
-   data           = data,
-   radiusInMeters = 1000
-)
+###############################################################################
+
+# Gives list of latitudes and longitudes for DC boundary
+# of type 'polygon'.
+DC = getShapeFileForDC()
+
+
+if False:
+   countCrimesInArea(
+      lat            = 38.9014829636, 
+      long           = -76.9332371122,
+      data           = data,
+      radiusInMeters = 1000
+   )
 
 
 
