@@ -33,6 +33,7 @@ offense_value_counts = data["OFFENSE"].value_counts()
 
 ###############################################################################
 # Latitude and longitude are in degrees
+# https://sciencing.com/convert-latitude-longtitude-feet-2724.html
 def convertDegreesToMeters(meters):
     return 111139*meters
 
