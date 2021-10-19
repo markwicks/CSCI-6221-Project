@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import fiona
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
@@ -16,8 +17,12 @@ def getCrimeData():
 ###############################################################################
 # Latitude and longitude are in degrees
 # https://sciencing.com/convert-latitude-longtitude-feet-2724.html
-def convertDegreesToMeters(meters):
-    return 111139*meters
+def convertDegreesToMeters(degrees):
+    return(111139*degrees)
+
+###############################################################################
+def convertMetersToDegrees(meters):
+    return(meters/111139)
 
 ###############################################################################
 def getDistance(lat1, long1, lat2, long2):
@@ -57,7 +62,7 @@ def getShapeFileForDC(returnDataFrame=False):
     with fiona.open(data_path + "/cb_2018_us_state_500k/cb_2018_us_state_500k.shp") as c:
          for record in c:
              if record.get('properties').get('STATEFP') == '11':
-                print("\n --> Found DC: " + str(record.get('properties')) + "\n")
+                #print("\n --> Found DC: " + str(record.get('properties')) + "\n")
                 coord_list = record.get('geometry').get('coordinates')
                 break
             
@@ -79,11 +84,17 @@ def getShapeFileForDC(returnDataFrame=False):
 # - long is Longitude
 # - Shape is a list of the latitude and longitude of each point giving the 
 #   outline of an area (in our case, DC)
-def isPointInDC(lat, long, shape):
-   point = Point(lat, long)
+def isPointInDC(lat, long, shape, output):
+    
+   point = Point(long, lat)
    polygon = Polygon(shape)
-   #print(polygon.contains(point))
-   return(polygon.contains(point))
+   result = polygon.contains(point)
+   
+   if output==True:
+      print(" --> Lat: " + str(lat) +  "  Long: " + str(long)) 
+      print(" --> In DC?: " + str(result))
+      
+   return(result)
    
 ###############################################################################
 # Returns the min and max value of the point list input.
@@ -115,48 +126,80 @@ def getLatLongRange(pointList, coordType):
     return(min, max)
           
 ##############################################################################  
-# Loop through x EVENLY spaced points within DC, and for each, compute
-# the number of crimes within a fixed radius. Save each value in a pandas data 
-# frame.       
-def getRankingData(pointList):
-    
-    ### CONVERT INPUT LIST TO PANDAS DATA FRAME ###   
-    pointListDataFrame = pd.DataFrame(pointList, columns=(["longitude", "latitude"]))
+# Overlay square a grid on top of DC, and iterate over each point in the grid, 
+# while checking whether each point is in DC. If the point is in DC, count 
+# the crimes in the surrounding area and save the result in a dataset.
+# When done, output the dataset.
+def getRankingData(pointList, crimeData, metersInterval):
     
     longMin, longMax = getLatLongRange(pointList, "longitude")
     latMin,  latMax  = getLatLongRange(pointList, "latitude")
     
-    numHorizontalSlices = 100
+    degreesInterval = convertMetersToDegrees(metersInterval) 
     
-    # Divide DC into 100 horizontal slices
-    latInt = (latMax-latMin)/numHorizontalSlices
+    # Current longitudinal and latitudinal values in the loop
+    currentLong = longMin
+    currentLat = latMin
     
-    currentLat = latMax
-    longitudeSum = 0
+    # Counters for number of points in and outside of DC
+    in_DC_counter = 0
+    not_in_DC_counter = 0
     
-    for x in range(0, numHorizontalSlices):
-
-       # get points between currentLat and currentLat plus latInt
-       tmpPoints = pointListDataFrame[pointListDataFrame['longitude'].between(currentLat, currentLat-latInt)]
+    latArray = np.arange(longMin, longMax, degreesInterval)
+    longArray = np.arange(latMin, latMax, degreesInterval)
+    
+    ##############################
+    # Work laterally (longitude) #
+    ##############################
+    for currentLong in longArray:
+           
+       #################################
+       # Working vertically (latitude) #
+       ##################################
+       for currentLat in latArray:
+           
+           if False:
+              print(" --> Current Lat: " + str(currentLat) + 
+                    "  Max Lat: " + str(latMax) + "\n")
+              print(" --> In DC. Counter: " + str(in_DC_counter))
+              print(" --> Not in DC. Counter: " + str(not_in_DC_counter))
+                
+           if isPointInDC(currentLong, currentLat, pointList, False) == True:
+               
+              x = countCrimesInArea(
+                lat            = currentLat, 
+                long           = currentLong,
+                data           = crimeData,
+                radiusInMeters = metersInterval
+              )
+              
+              in_DC_counter += 1
+           else:
+              not_in_DC_counter += 1
+          
+           currentLat += degreesInterval
+           
+       currentLong += degreesInterval
        
-       # get max and min longitude
-       # determine range and add to sum
-       currentLat -= latInt
+    return in_DC_counter, not_in_DC_counter
 
 
 ##############################################################################  
 
 # Gives list of latitudes and longitudes for DC boundary
 # of type 'polygon'.
-DC = getShapeFileForDC()
+DC_shape_file = getShapeFileForDC()
 
 crimeData = getCrimeData()
 
 offense_value_counts = crimeData["OFFENSE"].value_counts()
 
+numInDC, numNotInDC = getRankingData(DC_shape_file, crimeData, 1000)
+
 if False:
     
-   isPointInDC(-77.119759, 38.934343, DC)
+   # lincoln memorial
+   isPointInDC(lat=38.889248, long=-77.050636, shape=DC_shape_file, output=True) 
     
    countCrimesInArea(
       lat            = 38.9014829636, 
