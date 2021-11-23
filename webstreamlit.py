@@ -5,9 +5,9 @@ import requests
 from geopy.geocoders import Nominatim
 import folium
 from streamlit_folium import folium_static 
-import mainDC
+import main
 
-#You need to change the main file name to mainDC to run this code#
+
 #type "streamlit run webstreamlit.py" in your cmd window , it will pop out the website#
 
 data_path = "D:/CSCI 6212/CSCI-6221-Project/data/"
@@ -20,7 +20,7 @@ def getCrimeData():
     data = data[["LATITUDE", "LONGITUDE", "SHIFT", "START_DATE", "METHOD", "OFFENSE"]]
     return(data)
 
-def main():
+def website():
 	menu = ["Home"]
 	choice = st.sidebar.selectbox("Menu",menu)
 
@@ -67,7 +67,7 @@ def main():
 			st.write(test_loc.latitude, test_loc.longitude)
 			
 			#show the corresponding result table
-			crimeData = mainDC.getQuery(test_loc.latitude, test_loc.longitude,data_path,1000)
+			crimeData = main.getQuery(test_loc.latitude, test_loc.longitude,data_path,1000)
 			crimeresult=pd.DataFrame(crimeData,index=[0])
 			st.table(crimeresult)
 		
@@ -78,11 +78,5 @@ def main():
 			folium.Marker(lat_long, popup=test_loc,icon=folium.Icon(color='red',icon='fa-exclamation',prefix='fa')).add_to(m)
 			folium_static(m)
 
-			
-
-
-
-
-
 if __name__ == '__main__':
-	main()
+	website()
