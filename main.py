@@ -7,7 +7,7 @@ from shapely.geometry.polygon import Polygon
 # Radius in meters. When the user enters a point to generate a crime ranking,
 # the program checks within the radius below when counting crimes. Crimes 
 # outside the radius are ignored.
-RADIUS = 1000
+RADIUS = 250
 
 # Path where the data sets are saved.
 data_path = "/Users/markwicks/Desktop/Mark/Advanced Software Paradigms/CSCI-6221-Project/data/"
@@ -15,8 +15,33 @@ data_path = "/Users/markwicks/Desktop/Mark/Advanced Software Paradigms/CSCI-6221
 ###############################################################################
 # Read in the crime data set downloaded from the DC website.
 def getCrimeData(data_path):
-    data = pd.read_csv(data_path + "crime_2020.csv")
-    data = data[["LATITUDE", "LONGITUDE", "SHIFT", "START_DATE", "METHOD", "OFFENSE"]]
+    
+    ########
+    # 2020 #
+    ########
+    
+    data_2020 = pd.read_csv(data_path + "crime_2020.csv")
+    data_2020 = data_2020[["LATITUDE", "LONGITUDE", "SHIFT",
+                      "START_DATE", "METHOD", "OFFENSE"]]
+
+    ########
+    # 2019 #
+    ########
+    
+    data_2019 = pd.read_csv(data_path + "crime_2019.csv")
+    data_2019 = data_2019[["LATITUDE", "LONGITUDE", "SHIFT",
+                      "START_DATE", "METHOD", "OFFENSE"]]
+    
+    ########
+    # 2018 #
+    ########
+    
+    data_2018 = pd.read_csv(data_path + "crime_2018.csv")
+    data_2018 = data_2018[["LATITUDE", "LONGITUDE", "SHIFT",
+                      "START_DATE", "METHOD", "OFFENSE"]]
+    
+    data = data_2020.append(data_2019).append(data_2018)
+    
     return(data)
 
 ###############################################################################
@@ -416,7 +441,7 @@ if False:
      metersInterval = RADIUS,
      debug          = True
    )
-   
+ 
 ########################################
 ### GET CRIME RANKINGS FOR LOCATIONS ###
 ########################################  
