@@ -410,7 +410,7 @@ def getQuery(latitude, longitude, data_path, metersInterval, printValues=True):
       "number of assault crimes": number_of_crimes_dict['assault'],
       "number of robbery crimes": number_of_crimes_dict['robbery'],
       "number of burglary crimes": number_of_crimes_dict['burglary'],
-      "number of homocide crimes": number_of_crimes_dict['homocide'],
+      "number of homicide crimes": number_of_crimes_dict['homocide'],
       "number of other crimes": number_of_crimes_dict['other'],      
       
       "total crimes percentile ranking": total_number_of_crimes,
@@ -418,7 +418,7 @@ def getQuery(latitude, longitude, data_path, metersInterval, printValues=True):
       "assault crimes percentile ranking": assault,
       "robbery crimes percentile ranking": robbery,
       "burglary crimes percentile ranking ": burglary,
-      "homocide crimes percentile ranking": homocide,
+      "homicide crimes percentile ranking": homocide,
       "other crimes percentile ranking": other     
     }
     
