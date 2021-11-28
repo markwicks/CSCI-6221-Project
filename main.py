@@ -337,6 +337,13 @@ def getQuery(latitude, longitude, data_path, metersInterval, printValues=True):
     ### COMPUTE THE RANKINGS ###
     ############################
     
+    total_number_of_crimes = 0
+    theft = 0
+    assault = 0
+    robbery = 0
+    burglary = 0
+    other = 0
+    
     num_rows = rankingData.shape[0]
     
     # Total number of crimes
@@ -375,7 +382,7 @@ def getQuery(latitude, longitude, data_path, metersInterval, printValues=True):
            burglary = str(round(row_num/num_rows*100, 1))
            break
            
-    # Burglary
+    # Homocide
     rankingData.sort_values(by=["homocide"], inplace=True)
     for row_num in range(num_rows):
         if rankingData.iloc[row_num].homocide >= number_of_crimes_dict['homocide']: 
