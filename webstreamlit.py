@@ -45,23 +45,8 @@ def website():
 
 		#results
 		if submit_search:
-			#crimeData = mainDC.getQuery()
-
-			#num_of_results = len(crimeData)
-			#st.subheader("Showing {} crimes".format(num_of_results))
-
-			#st.write(crimeData)
-			#crimeData[["latitude", "longitude", "SHIFT", "START_DATE", "METHOD", "OFFENSE"]] = crimeData[["LATITUDE", "LONGITUDE", "SHIFT", "START_DATE", "METHOD", "OFFENSE"]]
-			#st.map(crimeData)
-
-
 			#use Geopy to fetch the latitude and longitude
 			geolocator =Nominatim(user_agent="DC_Crime")
-
-			#for i in df.index:
-				#try:
-					#tries fetch address from geopy
-					#location  = geolocator.geocode(df('query')[i])
 			test_loc=geolocator.geocode({location})
 			#show the latitude and longtitude
 			st.write(test_loc.latitude, test_loc.longitude)
