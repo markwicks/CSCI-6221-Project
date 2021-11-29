@@ -10,7 +10,7 @@ from shapely.geometry.polygon import Polygon
 RADIUS = 250
 
 # Path where the data sets are saved.
-data_path = "/Users/markwicks/Desktop/Mark/Advanced Software Paradigms/CSCI-6221-Project/data/"
+data_path = "/Users/josepher/PycharmProjects/test/CSCI-6221-Project/data/"
 
 ###############################################################################
 # Read in the crime data set downloaded from the DC website.
@@ -336,7 +336,12 @@ def getQuery(latitude, longitude, data_path, metersInterval, printValues=True):
     ############################
     ### COMPUTE THE RANKINGS ###
     ############################
-    
+    total_number_of_crimes = '0'
+    theft = '0'
+    assault = '0'
+    robbery = '0'
+    burglary = '0'
+    other = '0'
     num_rows = rankingData.shape[0]
     
     # Total number of crimes
@@ -401,17 +406,17 @@ def getQuery(latitude, longitude, data_path, metersInterval, printValues=True):
     
     # Store all info in a dictionary object, which will be returned
     crime_rankings_dict = {
-      "latitude": latitude,
-      "longitude": longitude,
-      "radius in meters": metersInterval,
+      #"latitude": latitude,
+      #"longitude": longitude,
+      #"radius in meters": metersInterval,
       
-      "total number of crimes ranking": number_of_crimes_dict['total_number_of_crimes'],
-      "number of theft crimes": number_of_crimes_dict['theft'],
-      "number of assault crimes": number_of_crimes_dict['assault'],
-      "number of robbery crimes": number_of_crimes_dict['robbery'],
-      "number of burglary crimes": number_of_crimes_dict['burglary'],
-      "number of homicide crimes": number_of_crimes_dict['homocide'],
-      "number of other crimes": number_of_crimes_dict['other'],      
+      #"total number of crimes ranking": number_of_crimes_dict['total_number_of_crimes'],
+      #"number of theft crimes": number_of_crimes_dict['theft'],
+      #"number of assault crimes": number_of_crimes_dict['assault'],
+      #"number of robbery crimes": number_of_crimes_dict['robbery'],
+      #"number of burglary crimes": number_of_crimes_dict['burglary'],
+      #"number of homicide crimes": number_of_crimes_dict['homocide'],
+      #"number of other crimes": number_of_crimes_dict['other'],
       
       "total crimes percentile ranking": total_number_of_crimes,
       "theft crimes percentile ranking": theft,
