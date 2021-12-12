@@ -10,7 +10,7 @@ from shapely.geometry.polygon import Polygon
 RADIUS = 250
 
 # Path where the data sets are saved.
-data_path = "/Users/josepher/PycharmProjects/test/CSCI-6221-Project/data/"
+data_path = "/Users/markwicks/Desktop/Mark/Advanced Software Paradigms/CSCI-6221-Project/data/"
 
 ###############################################################################
 # Read in the crime data set downloaded from the DC website.
@@ -351,49 +351,49 @@ def getQuery(latitude, longitude, data_path, metersInterval, printValues=True):
     for row_num in range(num_rows):
         if (rankingData.iloc[row_num].total_number_of_crimes >= 
             number_of_crimes_dict['total_number_of_crimes']):
-           total_number_of_crimes = str(round(row_num/num_rows*100, 1))
+           total_number_of_crimes = str(round(row_num/num_rows*100, 1)) + "%"
            break
            
     # Theft
     rankingData.sort_values(by=["theft"], inplace=True)
     for row_num in range(num_rows):
         if rankingData.iloc[row_num].theft >= number_of_crimes_dict['theft']: 
-           theft = str(round(row_num/num_rows*100, 1))
+           theft = str(round(row_num/num_rows*100, 1)) + "%"
            break
            
     # Assault
     rankingData.sort_values(by=["assault"], inplace=True)
     for row_num in range(num_rows):
         if rankingData.iloc[row_num].assault >= number_of_crimes_dict['assault']: 
-           assault = str(round(row_num/num_rows*100, 1))
+           assault = str(round(row_num/num_rows*100, 1)) + "%"
            break
            
     # Robbery
     rankingData.sort_values(by=["robbery"], inplace=True)
     for row_num in range(num_rows):
         if rankingData.iloc[row_num].robbery >= number_of_crimes_dict['robbery']: 
-           robbery = str(round(row_num/num_rows*100, 1))
+           robbery = str(round(row_num/num_rows*100, 1)) + "%"
            break
            
     # Burglary
     rankingData.sort_values(by=["burglary"], inplace=True) 
     for row_num in range(num_rows):
         if rankingData.iloc[row_num].burglary >= number_of_crimes_dict['burglary']: 
-           burglary = str(round(row_num/num_rows*100, 1))
+           burglary = str(round(row_num/num_rows*100, 1)) + "%"
            break
            
     # Homocide
     rankingData.sort_values(by=["homocide"], inplace=True)
     for row_num in range(num_rows):
         if rankingData.iloc[row_num].homocide >= number_of_crimes_dict['homocide']: 
-           homocide = str(round(row_num/num_rows*100, 1)) 
+           homocide = str(round(row_num/num_rows*100, 1)) + "%"
            break
        
     # Other
     rankingData.sort_values(by=["other"], inplace=True)
     for row_num in range(num_rows):
         if rankingData.iloc[row_num].other >= number_of_crimes_dict['other']: 
-           other = str(round(row_num/num_rows*100, 1)) 
+           other = str(round(row_num/num_rows*100, 1)) + "%"
            break
            
     if printValues == True:
