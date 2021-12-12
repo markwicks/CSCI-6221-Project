@@ -351,61 +351,85 @@ def getQuery(latitude, longitude, data_path, metersInterval, printValues=True):
     for row_num in range(num_rows):
         if (rankingData.iloc[row_num].total_number_of_crimes >= 
             number_of_crimes_dict['total_number_of_crimes']):
-           total_number_of_crimes = str(round(row_num/num_rows*100, 1)) + "%"
+           total_number_of_crimes = str(round(row_num/num_rows*100)) + "%"
            break
-           
+        if row_num==num_rows-1:
+           total_number_of_crimes = "100%"
+          
     # Theft
     rankingData.sort_values(by=["theft"], inplace=True)
     for row_num in range(num_rows):
         if rankingData.iloc[row_num].theft >= number_of_crimes_dict['theft']: 
-           theft = str(round(row_num/num_rows*100, 1)) + "%"
+           theft = str(round(row_num/num_rows*100)) + "%"
            break
+        if row_num==num_rows-1:
+           theft = "100%"
            
     # Assault
     rankingData.sort_values(by=["assault"], inplace=True)
     for row_num in range(num_rows):
         if rankingData.iloc[row_num].assault >= number_of_crimes_dict['assault']: 
-           assault = str(round(row_num/num_rows*100, 1)) + "%"
+           assault = str(round(row_num/num_rows*100)) + "%"
            break
-           
+        if row_num==num_rows-1:
+           assault = "100%"
+       
     # Robbery
     rankingData.sort_values(by=["robbery"], inplace=True)
     for row_num in range(num_rows):
         if rankingData.iloc[row_num].robbery >= number_of_crimes_dict['robbery']: 
-           robbery = str(round(row_num/num_rows*100, 1)) + "%"
+           robbery = str(round(row_num/num_rows*100)) + "%"
            break
+        if row_num==num_rows-1:
+           robbery = "100%"
            
     # Burglary
     rankingData.sort_values(by=["burglary"], inplace=True) 
     for row_num in range(num_rows):
         if rankingData.iloc[row_num].burglary >= number_of_crimes_dict['burglary']: 
-           burglary = str(round(row_num/num_rows*100, 1)) + "%"
+           burglary = str(round(row_num/num_rows*100)) + "%"
            break
+        if row_num==num_rows-1:
+           burglary = "100%"       
            
     # Homocide
     rankingData.sort_values(by=["homocide"], inplace=True)
     for row_num in range(num_rows):
         if rankingData.iloc[row_num].homocide >= number_of_crimes_dict['homocide']: 
-           homocide = str(round(row_num/num_rows*100, 1)) + "%"
+           homocide = str(round(row_num/num_rows*100)) + "%"
            break
-       
+        if row_num==num_rows-1:
+           homocide = "100%"
+           
     # Other
     rankingData.sort_values(by=["other"], inplace=True)
     for row_num in range(num_rows):
         if rankingData.iloc[row_num].other >= number_of_crimes_dict['other']: 
-           other = str(round(row_num/num_rows*100, 1)) + "%"
+           other = str(round(row_num/num_rows*100)) + "%"
            break
+        if row_num==num_rows-1:
+           other = "100%"
            
     if printValues == True:
        print("\nCrime Rankings (0% = lowest, 100% = highest):")
-       print("   Total:      " + total_number_of_crimes + "%")
-       print("     Theft:    " + theft + "%")
-       print("     Assault:  " + assault + "%")
-       print("     Robbery:  " + robbery + "%")
-       print("     Burglary: " + burglary + "%")
-       print("     Homocide: " + homocide + "%")
-       #print("     Other:    " + other + "%")       
-    
+       print("   Total:      " + total_number_of_crimes)
+       print("     Theft:    " + theft)
+       print("     Assault:  " + assault)
+       print("     Robbery:  " + robbery)
+       print("     Burglary: " + burglary)
+       print("     Homocide: " + homocide)
+       print("     Other:    " + other)    
+       
+    if printValues == True:
+       print("\nNumber of Crimes (2018-2020):")
+       print("   Total:      " + str(number_of_crimes_dict['total_number_of_crimes']))
+       print("     Theft:    " + str(number_of_crimes_dict['theft']))
+       print("     Assault:  " + str(number_of_crimes_dict['assault']))
+       print("     Robbery:  " + str(number_of_crimes_dict['robbery']))
+       print("     Burglary: " + str(number_of_crimes_dict['burglary']))
+       print("     Homocide: " + str(number_of_crimes_dict['homocide']))
+       print("     Other:    " + str(number_of_crimes_dict['other'])) 
+       
     # Store all info in a dictionary object, which will be returned
     crime_rankings_dict = {
       #"latitude": latitude,
@@ -457,8 +481,8 @@ if False:
   
    # For a given lat/long, get the crime rankings
    query1 = getQuery(
-     latitude       = 38.859959,
-     longitude      = -76.969035,
+     latitude       = 38.9051994,
+     longitude      = -77.062785,
      data_path      = data_path,
      metersInterval = RADIUS
    )
